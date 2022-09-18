@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -21,14 +22,11 @@ public class AfricanLionServiceImpl implements AfricanLionService {
 
     @Override
     public AfricanLion getLion(String lionName) {
-        List<AfricanLion> africanLionList = getLions();
-        AfricanLion africanLion = null;
-        for (AfricanLion temporalLion : africanLionList) {
-            if (temporalLion.getName().equalsIgnoreCase(lionName)) {
-                africanLion = temporalLion;
-            }
+        Optional<AfricanLion> africanLion = getLionByName(lionName);
+        if(africanLion.isPresent()){
+            return africanLion.get();
         }
-        return africanLion;
+        throw new RuntimeException();
     }
 
     @Override
@@ -90,6 +88,18 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         if(weight > maxWeight || weight < minWeight){
             throw new RuntimeException();
         }
+    }
+
+    private Optional<AfricanLion> getLionByName(String lionName) {
+        List<AfricanLion> africanLionList = getLions();
+        AfricanLion africanLion = null;
+        for (AfricanLion temporalLion : africanLionList) {
+            if (temporalLion.getName().equalsIgnoreCase(lionName)) {
+                africanLion = temporalLion;
+            }
+        }
+
+        return Optional.ofNullable(africanLion);
     }
 
     private AfricanLion getLionById(UUID africanLionId){
