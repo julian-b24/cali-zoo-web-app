@@ -20,6 +20,7 @@ public class AfricanLionController implements AfricanLionAPI {
 
     @Override
     public AfricanLionDTO getLion(String lionName) {
+        validateAfricanLionName(lionName);
         return africanLionMapper.fromAfricanLion(africanLionService.getLion(lionName));
     }
 
