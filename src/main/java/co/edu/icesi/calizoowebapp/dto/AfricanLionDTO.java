@@ -1,6 +1,7 @@
 package co.edu.icesi.calizoowebapp.dto;
 
 import co.edu.icesi.calizoowebapp.constants.AnimalSex;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,6 +26,7 @@ public class AfricanLionDTO {
 
     private double height;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime arrivedZooDate;
 
     private UUID fatherId;
