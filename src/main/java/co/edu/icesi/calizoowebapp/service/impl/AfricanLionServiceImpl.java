@@ -64,8 +64,10 @@ public class AfricanLionServiceImpl implements AfricanLionService {
     private void validateLionsParents(UUID fatherId, UUID motherId) {
         AfricanLion africanLionFather = getLionById(fatherId);
         AfricanLion africanLionMother = getLionById(motherId);
-        validateMotherAndFatherExists(africanLionFather, africanLionMother);
-        validateLionsParentsSex(africanLionFather, africanLionMother);
+        if(africanLionFather != null && africanLionMother != null){
+            validateMotherAndFatherExists(africanLionFather, africanLionMother);
+            validateLionsParentsSex(africanLionFather, africanLionMother);
+        }
     }
 
     private void validateLionsParentsSex(AfricanLion africanLionFather, AfricanLion africanLionMother) {

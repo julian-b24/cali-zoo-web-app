@@ -8,15 +8,15 @@ import co.edu.icesi.calizoowebapp.error.exception.AfricanLionException;
 import co.edu.icesi.calizoowebapp.mapper.AfricanLionMapper;
 import co.edu.icesi.calizoowebapp.service.AfricanLionService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RestController
 @AllArgsConstructor
-@NoArgsConstructor
 public class AfricanLionController implements AfricanLionAPI {
 
     private AfricanLionService africanLionService;
@@ -44,8 +44,8 @@ public class AfricanLionController implements AfricanLionAPI {
         validateAfricanLionArrivedZooDate(africanLionDTO.getArrivedZooDate());
     }
 
-    private void validateAfricanLionArrivedZooDate(LocalDateTime arrivedZooDate) {
-        if(arrivedZooDate.isAfter(LocalDateTime.now())){
+    private void validateAfricanLionArrivedZooDate(LocalDate arrivedZooDate) {
+        if(arrivedZooDate.isAfter(LocalDate.now())){
             throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_09, AfricanLionErrorCode.CODE_09.getMessage()));
         }
     }
