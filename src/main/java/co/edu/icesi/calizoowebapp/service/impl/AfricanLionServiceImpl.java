@@ -1,11 +1,15 @@
 package co.edu.icesi.calizoowebapp.service.impl;
 
+import co.edu.icesi.calizoowebapp.constants.AfricanLionErrorCode;
 import co.edu.icesi.calizoowebapp.constants.AfricanLionStandards;
 import co.edu.icesi.calizoowebapp.constants.AnimalSex;
+import co.edu.icesi.calizoowebapp.error.exception.AfricanLionError;
+import co.edu.icesi.calizoowebapp.error.exception.AfricanLionException;
 import co.edu.icesi.calizoowebapp.model.AfricanLion;
 import co.edu.icesi.calizoowebapp.repository.AfricanLionRespository;
 import co.edu.icesi.calizoowebapp.service.AfricanLionService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,7 +30,7 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         if(africanLion.isPresent()){
             return africanLion.get();
         }
-        throw new RuntimeException();
+        throw new AfricanLionException(HttpStatus.NOT_FOUND, new AfricanLionError(AfricanLionErrorCode.CODE_01, AfricanLionErrorCode.CODE_01.getMessage()));
     }
 
     @Override
@@ -45,7 +49,7 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         List<AfricanLion> africanLionList = getLions();
         for (AfricanLion lion: africanLionList) {
             if(lion.getName().equalsIgnoreCase(name)){
-                throw new RuntimeException();
+                throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_02, AfricanLionErrorCode.CODE_02.getMessage()));
             }
         }
     }
@@ -54,14 +58,25 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         validateLionsWeight(africanLion.getWeight(), africanLion.getSex());
         validateLionsAge(africanLion.getAge(), africanLion.getSex());
         validateLionsHeight(africanLion.getHeight(), africanLion.getSex());
-        validateLionsParentsSex(africanLion.getFatherId(), africanLion.getMotherId());
+        validateLionsParents(africanLion.getFatherId(), africanLion.getMotherId());
     }
 
-    private void validateLionsParentsSex(UUID fatherId, UUID motherId) {
+    private void validateLionsParents(UUID fatherId, UUID motherId) {
         AfricanLion africanLionFather = getLionById(fatherId);
         AfricanLion africanLionMother = getLionById(motherId);
+        validateMotherAndFatherExists(africanLionFather, africanLionMother);
+        validateLionsParentsSex(africanLionFather, africanLionMother);
+    }
+
+    private void validateLionsParentsSex(AfricanLion africanLionFather, AfricanLion africanLionMother) {
         if(africanLionFather.getSex().equals(africanLionMother.getSex())){
-            throw new RuntimeException();
+            throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_03, AfricanLionErrorCode.CODE_03.getMessage()));
+        }
+    }
+
+    private void validateMotherAndFatherExists(AfricanLion africanLionFather, AfricanLion africanLionMother) {
+        if(africanLionFather == null || africanLionMother == null){
+            throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_10, AfricanLionErrorCode.CODE_10.getMessage()));
         }
     }
 
@@ -70,7 +85,7 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         double maxHeight = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MAX_HEIGHT_CM : AfricanLionStandards.FEMALE_MAX_HEIGHT_CM;
         double minHeight = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MIN_HEIGHT_CM : AfricanLionStandards.FEMALE_MIN_HEIGHT_CM;
         if(height > maxHeight || height < minHeight){
-            throw new RuntimeException();
+            throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_04, AfricanLionErrorCode.CODE_04.getMessage()));
         }
     }
 
@@ -78,7 +93,7 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         double maxAge = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MAX_AGE : AfricanLionStandards.FEMALE_MAX_AGE;
         double minAge = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MIN_AGE : AfricanLionStandards.FEMALE_MIN_AGE;
         if(age > maxAge || age < minAge){
-            throw new RuntimeException();
+            throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_05, AfricanLionErrorCode.CODE_05.getMessage()));
         }
     }
 
@@ -86,7 +101,7 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         double maxWeight = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MAX_WEIGHT_KG : AfricanLionStandards.FEMALE_MAX_WEIGHT_KG;
         double minWeight = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MIN_WEIGHT_KG : AfricanLionStandards.FEMALE_MIN_WEIGHT_KG;
         if(weight > maxWeight || weight < minWeight){
-            throw new RuntimeException();
+            throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_06, AfricanLionErrorCode.CODE_06.getMessage()));
         }
     }
 
