@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -20,7 +21,14 @@ public class AfricanLionServiceImpl implements AfricanLionService {
 
     @Override
     public AfricanLion getLion(String lionName) {
-        return null;
+        List<AfricanLion> africanLionList = getLions();
+        AfricanLion africanLion = null;
+        for (AfricanLion temporalLion : africanLionList) {
+            if (temporalLion.getName().equalsIgnoreCase(lionName)) {
+                africanLion = temporalLion;
+            }
+        }
+        return africanLion;
     }
 
     @Override
@@ -36,8 +44,8 @@ public class AfricanLionServiceImpl implements AfricanLionService {
     }
 
     private void lionsNameIsUnique(String name) {
-        List<AfricanLion> lions = getLions();
-        for (AfricanLion lion: lions) {
+        List<AfricanLion> africanLionList = getLions();
+        for (AfricanLion lion: africanLionList) {
             if(lion.getName().equalsIgnoreCase(name)){
                 throw new RuntimeException();
             }
@@ -48,6 +56,15 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         validateLionsWeight(africanLion.getWeight(), africanLion.getSex());
         validateLionsAge(africanLion.getAge(), africanLion.getSex());
         validateLionsHeight(africanLion.getHeight(), africanLion.getSex());
+        validateLionsParentsSex(africanLion.getFatherId(), africanLion.getMotherId());
+    }
+
+    private void validateLionsParentsSex(UUID fatherId, UUID motherId) {
+        AfricanLion africanLionFather = getLionById(fatherId);
+        AfricanLion africanLionMother = getLionById(motherId);
+        if(africanLionFather.getSex().equals(africanLionMother.getSex())){
+            throw new RuntimeException();
+        }
     }
 
     private void validateLionsHeight(double height, AnimalSex sex) {
@@ -73,5 +90,9 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         if(weight > maxWeight || weight < minWeight){
             throw new RuntimeException();
         }
+    }
+
+    private AfricanLion getLionById(UUID africanLionId){
+        return africanLionRespository.findById(africanLionId).orElse(null);
     }
 }
