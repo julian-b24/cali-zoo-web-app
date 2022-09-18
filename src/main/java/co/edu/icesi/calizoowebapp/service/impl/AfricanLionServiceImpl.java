@@ -102,8 +102,6 @@ public class AfricanLionServiceImpl implements AfricanLionService {
     private void validateLionsWeight(double weight, AnimalSex sex) {
         double maxWeight = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MAX_WEIGHT_KG : AfricanLionStandards.FEMALE_MAX_WEIGHT_KG;
         double minWeight = (sex.equals(AnimalSex.MALE)) ? AfricanLionStandards.MALE_MIN_WEIGHT_KG : AfricanLionStandards.FEMALE_MIN_WEIGHT_KG;
-        System.out.println(maxWeight);
-        System.out.println(minWeight);
 
         if(weight > maxWeight || weight < minWeight){
             throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_06, AfricanLionErrorCode.CODE_06.getMessage()));
