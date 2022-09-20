@@ -3,9 +3,11 @@ package co.edu.icesi.calizoowebapp.service.impl;
 import co.edu.icesi.calizoowebapp.constants.AfricanLionErrorCode;
 import co.edu.icesi.calizoowebapp.constants.AfricanLionStandards;
 import co.edu.icesi.calizoowebapp.constants.AnimalSex;
+import co.edu.icesi.calizoowebapp.dto.AfricanLionDTO;
 import co.edu.icesi.calizoowebapp.error.exception.AfricanLionError;
 import co.edu.icesi.calizoowebapp.error.exception.AfricanLionException;
 import co.edu.icesi.calizoowebapp.model.AfricanLion;
+import co.edu.icesi.calizoowebapp.model.AfricanLionQueryResponse;
 import co.edu.icesi.calizoowebapp.repository.AfricanLionRespository;
 import co.edu.icesi.calizoowebapp.service.AfricanLionService;
 import lombok.AllArgsConstructor;
@@ -25,10 +27,13 @@ public class AfricanLionServiceImpl implements AfricanLionService {
     public final AfricanLionRespository africanLionRespository;
 
     @Override
-    public AfricanLion getLion(String lionName) {
+    public AfricanLionQueryResponse getLion(String lionName) {
         Optional<AfricanLion> africanLion = getLionByName(lionName);
         if(africanLion.isPresent()){
-            return africanLion.get();
+            AfricanLion requestedLion = africanLion.get();
+            AfricanLion lionFather = getLionById(africanLion.get().getFatherId());
+            AfricanLion lionMother = getLionById(africanLion.get().getMotherId());
+            return new AfricanLionQueryResponse(requestedLion, lionFather, lionMother);
         }
         throw new AfricanLionException(HttpStatus.NOT_FOUND, new AfricanLionError(AfricanLionErrorCode.CODE_01, AfricanLionErrorCode.CODE_01.getMessage()));
     }

@@ -3,6 +3,7 @@ package co.edu.icesi.calizoowebapp.controller;
 import co.edu.icesi.calizoowebapp.api.AfricanLionAPI;
 import co.edu.icesi.calizoowebapp.constants.AfricanLionErrorCode;
 import co.edu.icesi.calizoowebapp.dto.AfricanLionDTO;
+import co.edu.icesi.calizoowebapp.dto.AfricanLionQueryResponseDTO;
 import co.edu.icesi.calizoowebapp.error.exception.AfricanLionError;
 import co.edu.icesi.calizoowebapp.error.exception.AfricanLionException;
 import co.edu.icesi.calizoowebapp.mapper.AfricanLionMapper;
@@ -23,9 +24,9 @@ public class AfricanLionController implements AfricanLionAPI {
     private AfricanLionMapper africanLionMapper;
 
     @Override
-    public AfricanLionDTO getLion(String lionName) {
+    public AfricanLionQueryResponseDTO getLion(String lionName) {
         validateAfricanLionName(lionName);
-        return africanLionMapper.fromAfricanLion(africanLionService.getLion(lionName));
+        return africanLionMapper.fromAfricanLionQueryResponse(africanLionService.getLion(lionName));
     }
 
     @Override
