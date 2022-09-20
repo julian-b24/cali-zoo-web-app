@@ -11,7 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -36,7 +36,7 @@ public class AfricanLion {
 
     private double height;
 
-    private LocalDate arrivedZooDate;
+    private LocalDateTime arrivedZooDate;
 
     private UUID fatherId;
 

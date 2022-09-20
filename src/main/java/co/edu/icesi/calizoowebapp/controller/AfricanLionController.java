@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,8 +44,8 @@ public class AfricanLionController implements AfricanLionAPI {
         validateAfricanLionArrivedZooDate(africanLionDTO.getArrivedZooDate());
     }
 
-    private void validateAfricanLionArrivedZooDate(LocalDate arrivedZooDate) {
-        if(arrivedZooDate.isAfter(LocalDate.now())){
+    private void validateAfricanLionArrivedZooDate(LocalDateTime arrivedZooDate) {
+        if(arrivedZooDate.isAfter(LocalDateTime.now())){
             throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_09, AfricanLionErrorCode.CODE_09.getMessage()));
         }
     }

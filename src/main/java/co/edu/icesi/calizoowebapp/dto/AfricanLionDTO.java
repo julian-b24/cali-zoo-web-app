@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -26,8 +26,8 @@ public class AfricanLionDTO {
 
     private double height;
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate arrivedZooDate;
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime arrivedZooDate;
 
     private UUID fatherId;
 
