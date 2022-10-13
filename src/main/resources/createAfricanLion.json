@@ -1,0 +1,10 @@
+{
+  "name": "lionfather",
+  "sex": "MALE",
+  "weight": 240,
+  "age": 5,
+  "height": 110,
+  "arrivedZooDate": "2020-09-10 08:10:59",
+  "fatherId" : null,
+  "motherId" : null
+}
