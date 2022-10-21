@@ -1,9 +1,9 @@
-package co.edu.icesi.calizoowebapp.impl;
+package co.edu.icesi.calizoowebapp.integration;
 
 import co.edu.icesi.calizoowebapp.constants.AfricanLionErrorCode;
 import co.edu.icesi.calizoowebapp.dto.AfricanLionDTO;
 import co.edu.icesi.calizoowebapp.error.exception.AfricanLionError;
-import co.edu.icesi.calizoowebapp.error.exception.AfricanLionException;
+import co.edu.icesi.calizoowebapp.integration.config.InitialDataConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -37,6 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(
         webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT
 )
+@Import(InitialDataConfig.class)
 public class AfricanLionIntegrationTest {
 
     private MockMvc mockMvc;
