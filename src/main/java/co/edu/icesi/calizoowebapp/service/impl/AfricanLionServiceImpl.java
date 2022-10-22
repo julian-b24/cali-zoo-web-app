@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -42,6 +43,7 @@ public class AfricanLionServiceImpl implements AfricanLionService {
     public AfricanLion createLion(AfricanLion africanLion) {
         lionsNameIsUnique(africanLion.getName());
         areLionCharacteristicsInStandards(africanLion);
+        validateLionsParents(africanLion.getFatherId(), africanLion.getMotherId());
         return africanLionRespository.save(africanLion);
     }
 
@@ -63,15 +65,16 @@ public class AfricanLionServiceImpl implements AfricanLionService {
         validateLionsWeight(africanLion.getWeight(), africanLion.getSex());
         validateLionsAge(africanLion.getAge(), africanLion.getSex());
         validateLionsHeight(africanLion.getHeight(), africanLion.getSex());
-        validateLionsParents(africanLion.getFatherId(), africanLion.getMotherId());
     }
 
     private void validateLionsParents(UUID fatherId, UUID motherId) {
-        AfricanLion africanLionFather = getLionById(fatherId);
-        AfricanLion africanLionMother = getLionById(motherId);
-        if(africanLionFather != null && africanLionMother != null){
+        if(fatherId != null && motherId != null){
+            AfricanLion africanLionFather = getLionById(fatherId);
+            AfricanLion africanLionMother = getLionById(motherId);
             validateMotherAndFatherExists(africanLionFather, africanLionMother);
-            validateLionsParentsSex(africanLionFather, africanLionMother);
+            if(africanLionFather != null && africanLionMother != null){
+                validateLionsParentsSex(africanLionFather, africanLionMother);
+            }
         }
     }
 
@@ -82,7 +85,8 @@ public class AfricanLionServiceImpl implements AfricanLionService {
     }
 
     private void validateMotherAndFatherExists(AfricanLion africanLionFather, AfricanLion africanLionMother) {
-        if(africanLionFather == null || africanLionMother == null){
+        List<AfricanLion> africanLions = getLions();
+        if(!africanLions.contains(africanLionFather) || !africanLions.contains(africanLionMother)){
             throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_10, AfricanLionErrorCode.CODE_10.getMessage()));
         }
     }
