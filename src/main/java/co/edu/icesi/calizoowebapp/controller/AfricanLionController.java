@@ -54,10 +54,10 @@ public class AfricanLionController implements AfricanLionAPI {
 
     private void validateAfricanLionName(String lionName) {
         validateAfricanLionNameSize(lionName);
-        validateAfricanLionNameEspecialChars(lionName);
+        validateAfricanLionNameSpecialChars(lionName);
     }
 
-    private void validateAfricanLionNameEspecialChars(String lionName) {
+    private void validateAfricanLionNameSpecialChars(String lionName) {
         if(!lionName.matches("[\\sa-zA-Z]+")){
             throw new AfricanLionException(HttpStatus.BAD_REQUEST, new AfricanLionError(AfricanLionErrorCode.CODE_08, AfricanLionErrorCode.CODE_08.getMessage()));
         }
