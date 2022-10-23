@@ -251,6 +251,59 @@ public class AfricanLionCreateLionIntegrationTest {
         assertThat(exceptionResult, hasProperty("message", is(AfricanLionErrorCode.CODE_10.getMessage())));
     }
 
+    @Test
+    @SneakyThrows
+    public void createLionInvalidArrivedDate(){
+        AfricanLionDTO baseAfricanLion = baseAfricanLion();
+        baseAfricanLion.setName("lioninvalid");
+        baseAfricanLion.setArrivedZooDate(LocalDateTime.parse("2023-12-10T08:10:59"));
+        String body = objectMapper.writeValueAsString(baseAfricanLion);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/african-lion")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)).andExpect(status().isBadRequest())
+                .andReturn();
+
+        AfricanLionError exceptionResult = objectMapper.readValue(result.getResponse().getContentAsString(), AfricanLionError.class);
+
+        assertThat(exceptionResult, hasProperty("code", is(AfricanLionErrorCode.CODE_09)));
+        assertThat(exceptionResult, hasProperty("message", is(AfricanLionErrorCode.CODE_09.getMessage())));
+    }
+
+    @Test
+    @SneakyThrows
+    public void createLionNameLongerThan120Chars(){
+        AfricanLionDTO baseAfricanLion = baseAfricanLion();
+        baseAfricanLion.setName("lioninvalidddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd");
+        String body = objectMapper.writeValueAsString(baseAfricanLion);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/african-lion")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)).andExpect(status().isBadRequest())
+                .andReturn();
+
+        AfricanLionError exceptionResult = objectMapper.readValue(result.getResponse().getContentAsString(), AfricanLionError.class);
+
+        assertThat(exceptionResult, hasProperty("code", is(AfricanLionErrorCode.CODE_07)));
+        assertThat(exceptionResult, hasProperty("message", is(AfricanLionErrorCode.CODE_07.getMessage())));
+    }
+
+    @Test
+    @SneakyThrows
+    public void createLionNameSpecialChars(){
+        AfricanLionDTO baseAfricanLion = baseAfricanLion();
+        baseAfricanLion.setName("lioninvalid1@");
+        String body = objectMapper.writeValueAsString(baseAfricanLion);
+        MvcResult result = mockMvc.perform(MockMvcRequestBuilders.post("/african-lion")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(body)).andExpect(status().isBadRequest())
+                .andReturn();
+
+        AfricanLionError exceptionResult = objectMapper.readValue(result.getResponse().getContentAsString(), AfricanLionError.class);
+
+        assertThat(exceptionResult, hasProperty("code", is(AfricanLionErrorCode.CODE_08)));
+        assertThat(exceptionResult, hasProperty("message", is(AfricanLionErrorCode.CODE_08.getMessage())));
+    }
+
+
     @SneakyThrows
     private AfricanLionDTO baseAfricanLion(){
         String body = parseResourceToString("createAfricanLion.json");
