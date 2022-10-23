@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class AfricanLionController implements AfricanLionAPI {
     }
 
     @Override
-    public AfricanLionDTO createLion(AfricanLionDTO africanLionDTO) {
+    public AfricanLionDTO createLion(@Valid AfricanLionDTO africanLionDTO) {
         validateAfricanLionFields(africanLionDTO);
         return africanLionMapper.fromAfricanLion(africanLionService.createLion(africanLionMapper.fromAfricanLionDTO(africanLionDTO)));
     }

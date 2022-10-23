@@ -62,6 +62,8 @@ public class AfricanLionServiceTest {
         lionAge = 7;
         lionHeight = 110;
         lionArrivedZooDate = "2020-03-20T12:35:22";
+        lionFatherId = UUID.fromString("69a91b05-4621-4a79-9c94-372fa108d132");
+        lionMotherId = UUID.fromString("72786b9d-5485-4512-995c-b658e098f46a");
         AfricanLion otherAfricanLion =  new AfricanLion(UUID.fromString(lionId), lionName, lionSex, lionWeight, lionAge, lionHeight, LocalDateTime.parse(lionArrivedZooDate), lionFatherId, lionMotherId);
 
 

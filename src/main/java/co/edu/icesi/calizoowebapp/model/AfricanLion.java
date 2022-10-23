@@ -7,15 +7,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Table(name = "`africanLion`")
+@Table(name = "`african_lion`")
 @Entity
 @Builder
 @NoArgsConstructor
@@ -23,11 +21,13 @@ import java.util.UUID;
 public class AfricanLion {
 
     @Id
+    @NotNull
     @Type(type="org.hibernate.type.UUIDCharType")
     private UUID id;
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private AnimalSex sex;
 
     private double weight;
@@ -38,8 +38,10 @@ public class AfricanLion {
 
     private LocalDateTime arrivedZooDate;
 
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID fatherId;
 
+    @Type(type="org.hibernate.type.UUIDCharType")
     private UUID motherId;
 
     @PrePersist
